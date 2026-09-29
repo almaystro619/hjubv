@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>M3U Player 99645586</title>
+<style>
+body{margin:0;background:#111;color:#fff;font-family:Arial;padding:18px}
+.container{max-width:720px;margin:auto}h2{text-align:center}
+input,button{width:100%;box-sizing:border-box;padding:13px;margin:6px 0;border-radius:8px;font-size:16px}
+input{background:#222;color:#fff;border:1px solid #555}
+button{background:#1677ff;color:#fff;border:0;font-weight:bold}
+video{width:100%;margin:12px 0;background:#000;border-radius:8px}
+.channel{padding:12px;margin:6px 0;background:#222;border-radius:8px;cursor:pointer}
+.logo{width:55px;height:38px;object-fit:contain;vertical-align:middle;margin-left:10px}
+.small{color:#aaa}
+</style>
+</head>
+<body>
+<div class="container">
+<h2>📺 مشغل القنوات</h2>
+<p class="small">أدخل الكود</p>
+<input id="code" type="text" value="99645586" placeholder="أدخل الكود">
+<button onclick="checkCode()">تحميل</button>
+<div id="status" class="small"></div>
+<video id="player" controls playsinline></video>
+<input id="search" placeholder="🔎 ابحث عن قناة" oninput="searchChannels()">
+<div id="channels"></div>
+</div>
+<script>
+const ACCESS_CODE="99645586";
+const channels=[
+{name:"00s Replay",group:"Movies",logo:"https://images.pluto.tv/channels/62ba60f059624e000781c436/colorLogoPNG.png",url:"https://jmp2.uk/plu-62ba60f059624e000781c436.m3u8"},
+{name:"30A TV Classic Movies (720p)",group:"Movies",logo:"",url:"https://30a-tv.com/feeds/pzaz/30atvmovies.m3u8"},
+{name:"50 Cent Action (720p)",group:"Movies;Series",logo:"https://provider-static.plex.tv/epg/cms/production/bcfb9977-809f-49ae-acc7-430f2c6ffb26/50CentAction_Logo_1500x1000_DarkBG_-_Chris_Connors.png",url:"https://jmp2.uk/plu-68487fb3f212bedacf5a53e3.m3u8"},
+{name:"70s Cinema",group:"Movies",logo:"https://i.imgur.com/mgXeEE4.png",url:"https://jmp2.uk/plu-5f4d878d3d19b30007d2e782.m3u8"},
+{name:"80s Rewind",group:"Movies",logo:"https://i.imgur.com/nkEeYfI.png",url:"https://jmp2.uk/plu-5ca525b650be2571e3943c63.m3u8"},
+{name:"90s Throwback",group:"Movies",logo:"https://i.imgur.com/KoGko6M.png",url:"https://jmp2.uk/plu-5f4d86f519358a00072b978e.m3u8"},
+{name:"&TV International (1080p)",group:"Movies",logo:"https://xstreamcp-assets-msp.streamready.in/assets/LIVETV/LIVECHANNEL/LIVETV_LIVETVCHANNEL_SYMANDTV/images/LOGO_HD/LOGO_HD_image.png",url:"https://amg01117-amg01117c1-amgplt0029.playout.now3.amagi.tv/playlist/amg01117-amg01117c1-amgplt0029/playlist.m3u8"}
+];
+const status=document.getElementById("status"), channelsEl=document.getElementById("channels"), player=document.getElementById("player"), search=document.getElementById("search");
+function checkCode(){
+ const c=document.getElementById("code").value.trim();
+ if(c!==ACCESS_CODE){status.textContent="❌ الكود غير صحيح";channelsEl.innerHTML="";return}
+ status.textContent="✅ تم قبول الكود: "+c;
+ showChannels(channels);
+}
+function showChannels(list){
+ channelsEl.innerHTML="";
+ list.forEach(c=>{
+  const d=document.createElement("div");d.className="channel";
+  d.innerHTML=(c.logo?'<img class="logo" src="'+c.logo+'">':'')+
+  "<b>"+c.name+"</b><br><span class='small'>"+c.group+"</span>";
+  d.onclick=()=>playChannel(c.url);channelsEl.appendChild(d);
+ });
+}
+function playChannel(u){
+ player.src=u;player.play().catch(()=>status.textContent="⚠️ قد لا يدعم Chrome تشغيل هذا البث مباشرة.");
+}
+function searchChannels(){
+ const q=search.value.toLowerCase();
+ showChannels(channels.filter(c=>(c.name+" "+c.group).toLowerCase().includes(q)));
+}
+</script>
+</body>
+</html>
